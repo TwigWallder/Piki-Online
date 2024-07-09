@@ -13,11 +13,34 @@ function Player:load()
     self.friction = 3500
     self.gravity = 1500
     self.jumpAmount = -500
+
+    -- Network
     self.ID = 0
 
+    -- Stat
+    self.maxHP = 100
+    self.HP = self.maxHP
+    self.maxMP = 100
+    self.MP = self.maxMP
+    self.physicAttack = 0
+    self.magicAttack = 0
+    self.defense = 0
+    self.Intelligence = 0
+    self.Dexterity = 0
+    self.Agility = 0
+    self.luck = 0
+
+    -- Level
+    self.level = 1
+    self.nextXp = 50
+    self.xp = 0
+
+    
+    -- Grace
     self.graceTime = 0
     self.graceDuration = .1
 
+    -- Boolean
     self.grounded = false
     self.direction = "right"
     self.state = "idle"

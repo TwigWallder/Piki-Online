@@ -19,6 +19,7 @@ function Networking.load()
 	playerID = 0
 	playerCount = 0
 	ticks = 0
+	Networking.debug = false
 end
 
 function Networking.update(dt)
@@ -63,9 +64,11 @@ function Networking.update(dt)
 end
 
 function Networking.draw()
-	love.graphics.print("Data send:"..tostring(dataSend),5, 5)
-	love.graphics.print("Data recieved:"..tostring(dataReceived),5, 15)
-	love.graphics.print("Connexion: "..tostring(connected),5 ,25)
+	if Networking.debug then
+		love.graphics.print("Data send:"..tostring(dataSend),5, 5)
+		love.graphics.print("Data recieved:"..tostring(dataReceived),5, 15)
+		love.graphics.print("Connexion: "..tostring(connected),5 ,25)
+	end
 
 	--for i=1, playerCount do
 	--	if not (playerID == Player.ID) then 
