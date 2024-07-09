@@ -13,7 +13,7 @@ function Player:load()
 
     self.x = 400
     self.y = 200
-    self.speed = 5
+    self.speed = 500
     self.spriteSheet = love.graphics.newImage('sprites/player-sheet.png')
     self.grid = anim8.newGrid( 12, 18, self.spriteSheet:getWidth(), self.spriteSheet:getHeight() )
 
@@ -64,25 +64,25 @@ function Player:move(dt)
     local isMoving = false
 
     if love.keyboard.isDown("right") then
-        self.x = self.x + self.speed
+        self.x = self.x + (self.speed * dt)
         self.anim = self.animations.right
         isMoving = true
     end
 
     if love.keyboard.isDown("left") then
-        self.x = self.x - self.speed
+        self.x = self.x - (self.speed * dt)
         self.anim = self.animations.left
         isMoving = true
     end
 
     if love.keyboard.isDown("down") then
-        self.y = self.y + self.speed
+        self.y = self.y + (self.speed * dt)
         self.anim = self.animations.down
         isMoving = true
     end
 
     if love.keyboard.isDown("up") then
-        self.y = self.y - self.speed
+        self.y = self.y - (self.speed * dt)
         self.anim = self.animations.up
         isMoving = true
     end
