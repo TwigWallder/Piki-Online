@@ -14,8 +14,6 @@ function love.load()
 
 	Player:load()
 	Networking:load()
-	music = love.audio.newSource("music.mp3", "stream")
-	music:play()
 end
 
 function love.update(dt)
