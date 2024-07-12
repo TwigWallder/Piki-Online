@@ -3,6 +3,7 @@ local pm = require("libraries.packetManager")
 
 local tickrate = 20
 local ticks = 0
+local playerList = {}
 local playerCount = 0
 
 function love.load()
@@ -20,11 +21,27 @@ function love.load()
     end)
 
     netlib:on("player_join", function(packet)
+        playerCount = playerCount + 1
+
         netlib:send(pm:createPacket("player_id", {
             ID = playerCount
         }), packet.sender)
-        playerCount = playerCount + 1
-        print("new player joined")
+
+        table.insert(playerList, {
+            ID = playerCount,
+            address = packet.sender
+        })
+
+        print("player [" .. playerCount .. "] joined")
+    end)
+
+    netlib:on("disconnect", function(packet)
+        for i, connection in ipairs(playerList) do
+            if connection.address == packet.sender then
+                table.remove(playerList, i)
+                print("player [" .. connection.ID .. "] left")
+            end
+        end
     end)
 
     netlib:on("player_move", function(packet)
