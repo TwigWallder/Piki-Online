@@ -1,1 +1,5 @@
+# Game assets
 Client/assets
+
+# LUA Lsp workspace config
+.luarc.json

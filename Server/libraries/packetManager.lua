@@ -1,29 +1,33 @@
-local serialize  = require "libraries/ser"
+local serialize  = require("libraries.ser")
 
-local funcs = {}
+local pm = {}
 
-funcs.serialize = function(data)
+-- conversion en string pour envoyer en ligne
+function pm:serialize(data)
     return serialize(data)
 end
 
-funcs.deserialize = function(data)
+function pm:deserialize(data)
     -- conversion en table lua
     local deserialize = load(data)
 
     -- verificqtion que la table existe
     if deserialize then
         local table = deserialize()
-
-        -- on debug la table
-        --for key, value in pairs(table) do
-        --    print(key, value)
-        --end
-
         return table
-
     else
         return nil
     end
 end
 
-return funcs
+-- cette fonction creer
+function pm:createPacket(type, data)
+    return {
+        -- pour eviter de faire de la merde
+        -- le type sera toujous en minuscule
+        type = string.lower(type),
+        data = data
+    }
+end
+
+return pm
