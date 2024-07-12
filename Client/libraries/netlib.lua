@@ -86,7 +86,7 @@ function netlib:pollEvents()
     end
 
     if event.type == "receive" then    -- RECEIVE
-        print("packet received: ", event.data, event.peer)
+        print("packet received from ", event.peer)
 
         -- packet 'porteur'
         local carrier = pm:deserialize(event.data)
@@ -99,7 +99,7 @@ function netlib:pollEvents()
         }
         self:emit(packet.type, packet);
     elseif event.type == "connect" then    -- CONNECT
-        print("connection request received: ", event.data, event.peer)
+        print("connection request received from ", event.peer)
 
         -- packet
         local packet = {
@@ -108,7 +108,7 @@ function netlib:pollEvents()
         }
         self:emit(packet.type, packet);
     elseif event.type == "disconnect" then    -- DISCONNECT
-        print("connection lost: ", event.data, event.peer)
+        print("connection lost from ", event.peer)
 
         -- packet
         local packet = {

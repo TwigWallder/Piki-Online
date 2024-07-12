@@ -5,6 +5,7 @@ require("UI")
 -- networking
 local netlib = require("libraries.netlib")
 local pm = require("libraries.packetManager")
+local connected = false
 local tickrate = 20
 local ticks = 0
 local server = nil
@@ -16,21 +17,26 @@ function love.load()
 	chatBox:load()
 	UI:load()
 
-    netlib:createClient()                       -- creation du client
+    -- creation du client
+    netlib:createClient({
+        debug = true
+    })
     server = netlib:connect("localhost:6789")   -- connexion au serveur
 
      -- gestion des requetes de connexion
     netlib:on("connect", function(packet)
-        netlib:send(pm:createPacket("ping", {
-            message = "client ping"
+        netlib:send(pm:createPacket("player_join", {
         }), packet.sender)
     end)
 
-    -- gestion des requetes de ping
-    netlib:on("ping", function(packet)
-        netlib:send(pm:createPacket("pong", {
-            message = "client alive"
-        }), packet.sender)
+    netlib:on("disconnect", function()
+        connected = false
+    end)
+
+    netlib:on("player_id", function(packet)
+        connected = true -- on le met true ici et pas dans 'connect' car un joueur n'es valide uniquement s'il a un ID
+        Player.ID = packet.data.ID
+        print("player.ID = " .. Player.ID)
     end)
 end
 
@@ -40,10 +46,13 @@ function love.update(dt)
         netlib:pollEvents()                     -- lecture des packets
 
         -- juste pour tester on envoi un packet 'player_move' avec la position du joueur
-        netlib:send(pm:createPacket("player_move", {
-            x = Player.x,
-            y = Player.y
-        }), server)
+        if connected then
+            netlib:send(pm:createPacket("player_move", {
+                ID = Player.ID,
+                x = Player.x,
+                y = Player.y
+            }), server)
+        end
     end
 
 	Player:update(dt)
