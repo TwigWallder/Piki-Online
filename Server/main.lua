@@ -6,7 +6,10 @@ local ticks = 0
 
 function love.load()
     print("loading server")
-    netlib:createServer()       -- creation du serveur
+    -- creation du serveur
+    netlib:createServer({
+        debug = true
+    })
 
     -- gestion des requetes de ping
     netlib:on("ping", function(packet)
