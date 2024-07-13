@@ -57,8 +57,15 @@ function Player:load()
     self.xp = 0
 
     -- A déplacer plus tard
-    local wall = world:newRectangleCollider(100, 200, 120, 300)
-    wall:setType('static')
+
+    walls = {}
+    if gameMap.layers["Walls"] then
+        for i, obj in pairs(gameMap.layers["Walls"].objects) do
+            local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+            wall:setType('static')
+            table.insert(walls, wall)
+        end
+    end
 end
 
 function Player:update(dt)
@@ -76,7 +83,10 @@ function Player:draw()
     gameMap:drawLayer(gameMap.layers["Trees"])
     self.anim:draw(self.spriteSheet, self.x, self.y, nil, 6, nil, 6, 9)
     love.graphics.print("ID: "..tostring(self.ID), self.x - 15, self.y - 70)
-    world:draw()
+
+    -- DEBUG
+    --world:draw()
+    --------
     cam:detach()
 end
 
