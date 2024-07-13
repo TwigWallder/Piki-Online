@@ -1,13 +1,20 @@
 
 Player = {}
 
+-- Camera
 camera = require 'libraries/camera'
 cam = camera()
 
+-- Animation
 anim8 = require 'libraries/anim8'
 
+-- Map
 sti = require 'libraries/sti'
 gameMap = sti('maps/testMap.lua')
+
+-- Collision system
+wf = require 'libraries/windfield'
+world = wf.newWorld(0, 0)
 
 function Player:load()
 
@@ -24,6 +31,9 @@ function Player:load()
     self.animations.up = anim8.newAnimation( self.grid('1-4', 4), 0.2 )
 
     self.anim = self.animations.left
+
+    self.collider = world:newBSGRectangleCollider(400, 250, 50, 100, 10)
+    self.collider:setFixedRotation(true)
 
     -- Network
     self.ID = 0
@@ -50,6 +60,10 @@ end
 function Player:update(dt)
     self:move(dt)
     self:camera()
+
+    world:update(dt)
+    self.x = self.collider:getX()
+    self.y = self.collider:getY()
 end
 
 function Player:draw()
@@ -57,6 +71,7 @@ function Player:draw()
     gameMap:drawLayer(gameMap.layers["Ground"])
     gameMap:drawLayer(gameMap.layers["Trees"])
     self.anim:draw(self.spriteSheet, self.x, self.y, nil, 6, nil, 6, 9)
+    world:draw()
     cam:detach()
 end
 

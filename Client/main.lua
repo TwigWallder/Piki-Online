@@ -23,7 +23,7 @@ function love.load()
     })
     server = netlib:connect("localhost:6789")   -- connexion au serveur
 
-     -- gestion des requetes de connexion
+    -- gestion des requetes de connexion
     netlib:on("connect", function(packet)
         netlib:send(pm:createPacket("player_join", {
         }), packet.sender)
