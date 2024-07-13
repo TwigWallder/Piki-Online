@@ -55,6 +55,10 @@ function Player:load()
     self.level = 1
     self.nextXp = 50
     self.xp = 0
+
+    -- A déplacer plus tard
+    local wall = world:newRectangleCollider(100, 200, 120, 300)
+    wall:setType('static')
 end
 
 function Player:update(dt)
@@ -71,6 +75,7 @@ function Player:draw()
     gameMap:drawLayer(gameMap.layers["Ground"])
     gameMap:drawLayer(gameMap.layers["Trees"])
     self.anim:draw(self.spriteSheet, self.x, self.y, nil, 6, nil, 6, 9)
+    love.graphics.print("ID: "..tostring(self.ID), self.x - 15, self.y - 70)
     world:draw()
     cam:detach()
 end
@@ -78,29 +83,34 @@ end
 function Player:move(dt)
     local isMoving = false
 
-    if love.keyboard.isDown("right") then
-        self.x = self.x + (self.speed * dt)
+    local vx = 0
+    local vy = 0
+
+    if love.keyboard.isDown("right", "d") then
+        vx = self.speed
         self.anim = self.animations.right
         isMoving = true
     end
 
-    if love.keyboard.isDown("left") then
-        self.x = self.x - (self.speed * dt)
+    if love.keyboard.isDown("left", "q") then
+        vx = self.speed * -1
         self.anim = self.animations.left
         isMoving = true
     end
 
-    if love.keyboard.isDown("down") then
-        self.y = self.y + (self.speed * dt)
+    if love.keyboard.isDown("down", "s") then
+        vy = self.speed
         self.anim = self.animations.down
         isMoving = true
     end
 
-    if love.keyboard.isDown("up") then
-        self.y = self.y - (self.speed * dt)
+    if love.keyboard.isDown("up", "z") then
+        vy = self.speed * -1
         self.anim = self.animations.up
         isMoving = true
     end
+
+    self.collider:setLinearVelocity(vx, vy)
 
     if isMoving == false then
         self.anim:gotoFrame(2)
