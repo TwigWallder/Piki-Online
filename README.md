@@ -1,7 +1,5 @@
-![logo](https://media.discordapp.net/attachments/645719590097125398/1261684331710119978/bg.png?ex=6693da99&is=66928919&hm=a97125d742c0d3a7f1f199db17571304c2837be493904a948d2b1431ec5b5ab1&=&format=webp&quality=lossless&width=550&height=302)
-<br>
-This is the repo of Piki Online the next big MMORP that will take the online world by storm.
-
+##Piki Online
+Piki Online is an experimental project designed to explore and implement networking features using <a href="https://love2d.org/">Love2D</a>, a popular framework for creating 2D games in Lua.<br> The main goal of the project is to learn how to integrate online multiplayer capabilities into games, testing different networking protocols and strategies. 
 <h1>Libraries:</h1>
 
   <ul><a href="https://github.com/Nephys/piki-netlib">Piki netlib</a></ul>
